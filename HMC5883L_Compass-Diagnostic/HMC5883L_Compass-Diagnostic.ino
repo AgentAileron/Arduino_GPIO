@@ -23,7 +23,11 @@ Adafruit_HMC5883_Unified mag = Adafruit_HMC5883_Unified(12345); // Assign unique
 signed long coordStrength[3] = {0,0,0};  // Holds flux values read from magnetometer
 unsigned long execTime; // Min time til next execution
 bool coordprinted = false;  // True when any coordinates have been printed during a cycle
+
+// Semi - Dynamic //
+unsigned int delayTime = 200; // Delay between reading (milliseconds)
 float declination = 0.2042; // Angle of declination at Melbourne Australia, 07/2017 (Radians)
+
 
 void setup() {
   Serial.begin(9600);
@@ -49,6 +53,7 @@ void setup() {
 }
 
 void loop() {
+  readSerial();
   if (millis() > execTime){
     for (int i=0;i < 3; i++){ // Print requeseted coordinate values
       static bool coordShown = false; // Is true when coordinate pre-statement is printed
@@ -82,7 +87,7 @@ void loop() {
       Serial.print(readMagnetometer());
       Serial.println(" rads");
     }
-    execTime = millis() + 200;  // Schedule next execution in 'x'ms
+    execTime = millis() + delayTime;  // Schedule next execution in 'x'ms
   }
 }
 
@@ -106,10 +111,11 @@ float readMagnetometer(void){
 }
 
 // Queries Serial for user input
-void serialEvent(void){
+void readSerial(void){
   while(Serial.available()){
     static String inString = "";
     static bool takingDeclination = false;
+    static bool takingDelay = false;
     
     char inChar = (char)Serial.read();  // Read next byte from serial
     
@@ -122,6 +128,13 @@ void serialEvent(void){
           Serial.println("Invalid declination value given! - must be in radians");
           takingDeclination = false;
         }
+      }else if (takingDelay){  // Change delay mode
+        if (inString.toInt() > 0){ // Valid delay time given
+            delayTime = inString.toInt();
+        }else{ // Invalid delay time given
+          Serial.println("Invalid delay time given! - must be greater than 0");
+          takingDelay = false;
+        }
       }else if (inString.equalsIgnoreCase("degrees")){ // Set angular reading to degrees
         valDisplay[3] = true;
       }else if (inString.equalsIgnoreCase("radians")){ // Set angular reading to radians
@@ -129,16 +142,20 @@ void serialEvent(void){
       }else if (inString.equalsIgnoreCase("changeinclination")
                     |inString.equalsIgnoreCase("change inclination")){ // change declination is requested
         takingDeclination = true;
-        Serial.println("Submit new declination value now (radians");
+        Serial.println("Submit new declination value now (radians)");
+      }else if (inString.equalsIgnoreCase("changedelay")
+                    |inString.equalsIgnoreCase("change delay")){ // change delay is requested
+        takingDelay = true;
+        Serial.println("Submit new delay value");
       }else if (inString.equalsIgnoreCase("declination")){ // State current declination value
         Serial.print("Current Declination set to: ");Serial.print(declination);
           Serial.println(" Radians.");
       }else if (inString.equalsIgnoreCase("X")){  // Show/hide X val
-        swapBool(valDisplay[0]);
+        valDisplay[0]=swapBool(valDisplay[0]);
       }else if (inString.equalsIgnoreCase("Y")){  // Show/hide Y val
-        swapBool(valDisplay[1]);
+        valDisplay[1]=swapBool(valDisplay[1]);
       }else if (inString.equalsIgnoreCase("X")){  // Show/hide Z val
-        swapBool(valDisplay[2]);
+        valDisplay[2]=swapBool(valDisplay[2]);
       }
       inString= ""; // Reset input string cache
     }else{ // Add current byte to input string
