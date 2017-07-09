@@ -1,3 +1,13 @@
+/*  Bluetooth Serial Communicator
+ *  C: 09/07/2017 | LM: 09/07/2017
+ *  ----------------------------------
+ *  INCOMPLETE!
+ *  ----------------------------------
+ *  By Rithesh R Jayaram
+ *  ----------------------------------
+*/
+
+// LIBRARIES //
 #include <SoftwareSerial.h>// import the serial library
 
 SoftwareSerial BTS(11, 10); // RX, TX

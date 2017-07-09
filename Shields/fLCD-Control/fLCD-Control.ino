@@ -1,6 +1,12 @@
-/*  RGB LCD CONTROL SKETCH
- *  C: 07/07/2017 | LM: 07/07/2017
- *  Rithesh Jayaram
+/*  RGB LCD Control
+ *  C: 07/07/2017 / | LM: 07/07/2017
+ *  ----------------------------------
+ *  TODO - make into library
+ *  TODO - add output support
+ *  ----------------------------------
+ *  By Rithesh R Jayaram
+ *  ----------------------------------
+ *  Using Adafruit RBGLCD Library
 */
 
 // LIBRARIES //
