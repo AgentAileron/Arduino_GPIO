@@ -1,6 +1,6 @@
 /*  RGB LCD CONTROL SKETCH
-    C: 07/07/2017 | LM: 07/07/2017
-    Rithesh Jayaram
+ *  C: 07/07/2017 | LM: 07/07/2017
+ *  Rithesh Jayaram
 */
 
 // LIBRARIES //
