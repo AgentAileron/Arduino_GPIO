@@ -3,6 +3,8 @@
  *  ----------------------------------
  *  This sketch doubles as a documentation database for shield experiments
  *  
+ *  TOUCHSCREEN IS DISFUNCTIONAL - FIX WHEN POSSIBLE
+ *  
  *  > Diplay size in pixels: __X240
  *  > Screen coordinates aligned from top-right edge
  *  > Analog pins for display / touchscreen can be shared
@@ -26,14 +28,16 @@ TouchScreen ts = TouchScreen(A3, A2, 9, 8, 300); // Initialise Touchscreen (defa
 
 /* Pins: LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET (ripped from original sketch definitions) */
 Adafruit_TFTLCD tft(A3, A2, A1, A0, A4);    // Initialise LCD Display (default w/shield: A3, A3, A1, A0, A4)
-
+uint16_t identifier = tft.readID();
 
 void setup(){
   Serial.begin(9600); // Debugging serial
   Serial.println(F("Debug sketch for TFT LCD 2.8\""));
   tft.reset();  // Resets tft device (instant white-screen is visual effect seen)
-
-  checkDrivers(); // Prints found drivers to serial
+  tft.begin(identifier);
+  tft.fillScreen(0x0000);
+  tft.drawRect(0,0,240,320, 0xFFFF);
+  checkDrivers(); // Prints found drivers of shield to serial
 }
 
 void loop(){
@@ -44,6 +48,13 @@ void loop(){
   pinMode(9, OUTPUT);
   pinMode(A2, OUTPUT);
   pinMode(8, OUTPUT);
+
+  if (p.z > 10 && p.z < 1000) {
+    
+    Serial.print("X = "); Serial.print(p.x);
+    Serial.print("\tY = "); Serial.print(p.y);
+    Serial.print("\tPressure = "); Serial.println(p.z);
+  }
 }
 
 
