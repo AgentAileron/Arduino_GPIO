@@ -49,8 +49,7 @@ void loop(){
   pinMode(A2, OUTPUT);
   pinMode(8, OUTPUT);
 
-  if (p.z > 10 && p.z < 1000) {
-    
+  if (p.z > 10 && p.z < 10000) {
     Serial.print("X = "); Serial.print(p.x);
     Serial.print("\tY = "); Serial.print(p.y);
     Serial.print("\tPressure = "); Serial.println(p.z);
