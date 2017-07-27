@@ -8,6 +8,13 @@
  *  Debug serial = serial to usual TX/RX (and debug monitor)
  *  
  *  To activate AT mode:
+ *    > Remove BT Module power
+ *    > Hold module button (or apply 3v3 to pin 34 on BT board)
+ *    > Power on module 
+ *  
+ *  Pins:
+ *    BT-TX <--> D10
+ *    BT-RX <--> D11
  *    
  *  ----------------------------------
  *  By Rithesh R Jayaram
