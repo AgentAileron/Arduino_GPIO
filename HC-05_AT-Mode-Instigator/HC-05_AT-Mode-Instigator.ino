@@ -23,17 +23,16 @@
 
 // LIBRARIES //
 #include <SoftwareSerial.h> // Software serial
-SoftwareSerial BTS(11, 10); // RX | TX (secondary serial on these pins)
+SoftwareSerial BTS(9, 10); // RX | TX (secondary serial on these pins)
 
 // VARS //
 const long baudRate = 38400; 
-boolean NL = true;
  
 void setup() 
 {
     Serial.begin(9600); // Initialise wired serial
     BTS.begin(baudRate); // Initialise BT serial
-    Serial.print("BT serial started at "); Serial.println(baudRate);
+    Serial.print("BT serial started at "); Serial.print(baudRate);
     Serial.println(" baud");
 }
  
@@ -45,21 +44,19 @@ void loop()
 // Reads and transfers data between debug and BT
 void btTransfer(){
    char c;  // Holds temp char read in at each iteration
+   static boolean NL = true; // Whether or not to print '>' for user input from debug
 
    // Write BT serial out to debug serial
-    if (BTS.available()) {
-        c = BTS.read();   // read in one byte
-        Serial.write(c);  // write to debug serial
-    }
+    if (BTS.available()) { Serial.write(BTS.read()); }  // write to debug serial
  
  
     // Write debug serial out to BT serial
     if (Serial.available()) {
-        c = Serial.read();  // read from debug
-        BTS.write(c);       // write to BT
+        c = Serial.read();          // read from debug
+        BTS.write(Serial.read());   // write to BT
  
-        // Echo the user input to the main window. The ">" character indicates the user entered text.
-        if (NL) { Serial.print(">");  NL = false; }
+        // Echo the user input to the main window - '>' indicates the user entered text
+        if (NL) { Serial.print("> ");  NL = false; }
         Serial.write(c);
         if (c == 10) { NL = true; } 
     }
