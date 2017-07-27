@@ -1,8 +1,7 @@
-/*  HC-05 Bluetooth Module AT Mode interrogator
+/*  HC-05 Bluetooth Module Basic Bluetooth Serial
  *  C: 27/07/2017 | LM: 27/07/2017
  *  ----------------------------------
- *  Activates and interacts with AT mode on BT module
- *  (See comments for list of available options and commands
+ *  Communicates with bluetooth connected remote terminal
  *  ----------------------------------
  *  By Rithesh R Jayaram
  *  ----------------------------------
